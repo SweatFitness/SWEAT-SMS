@@ -47,8 +47,10 @@ app.get('/sendText', function(req, res) {
 
             console.log('Message sent on:');
             console.log(message.dateCreated);
+            res.send('success');
         } else {
             console.log('Oops! There was an error.');
+            res.send('error');
         }
     });
 });
