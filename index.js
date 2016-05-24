@@ -63,8 +63,7 @@ app.get('/respond', function(req, res) {
     var twiml = new twilio.TwimlResponse();
     var body = req.param('Body');
     var from = req.param('From');
-    
-    if (body.toLowerCase().indexOf('yes') >= 0) {
+    if (body.toLowerCase().replace(' ', '').indexOf('yes') >= 0) {
         console.log(from);
         phoneToUser.child(from).on("value", function(snapshot) {
             var ownerid = snapshot.val();
