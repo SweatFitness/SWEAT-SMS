@@ -3,7 +3,9 @@ var twilio = require('twilio'),
     express = require('express'),
     app = express(),
     bodyparser = require('body-parser'),
-    firebase = require('firebase'),
+    Firebase = require('firebase'),
+    messageQueue = new Firebase('https://sweatfitness.firebaseio.com/messageQueue'),
+    phoneToUser = new Firebase('https://sweatfitness.firebaseio.com/phoneToUser'),
     // Create a new REST API client to make authenticated requests against the
     // twilio back end
     client = new twilio.RestClient('ACd3a9cfaa9b43d32faaa1508c0b8e366a', '2a98480175ada06ff25f6302ac3f32f1');
@@ -48,6 +50,7 @@ app.get('/sendText', function(req, res) {
             console.log('Message sent on:');
             console.log(message.dateCreated);
             res.send('success');
+            
         } else {
             console.log('Oops! There was an error.');
             res.send('error');
@@ -58,15 +61,13 @@ app.get('/sendText', function(req, res) {
 app.get('/respond', function(req, res) {
     var twilio = require('twilio');
     var twiml = new twilio.TwimlResponse();
-    console.log(req.param('Body'));
-    console.log(req.param('From'));
+    var body = req.param('Body');
+    var from = req.param('From');
     
-    if (req.body.Body == 'hello') {
-        twiml.message('Hi!');
-    } else if(req.body.Body == 'bye') {
-        twiml.message('Goodbye');
-    } else {
-        twiml.message('No Body param match, Twilio sends this in the request to your server.');
+    if (body.toLowerCase().indexOf('yes') >= 0) {
+        phoneToUser.child(from).on("value", function(snapshot) {
+            console.log(snapshot.val());
+        });
     }
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
