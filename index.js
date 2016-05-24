@@ -67,7 +67,18 @@ app.get('/respond', function(req, res) {
     if (body.toLowerCase().indexOf('yes') >= 0) {
         console.log(from);
         phoneToUser.child(from).on("value", function(snapshot) {
-            console.log(snapshot.val());
+            var ownerid = snapshot.val();
+            console.log('ownerid: ' + ownerid);
+            messageQueue.child(ownerid).once('value', function(snapshot) {
+                workouts = snapshot.val();
+                var respondTo = workouts[workouts.length -1];
+                console.log('respondTo: ' + respondTo);
+                client.sms.messages.create({
+                    to:'+1' + respondTo.from_phone,
+                    from: '+13126754740',
+                    body: respondTo.from_name + ' confirmed your request. Enjoy your workout!',
+                });
+            });
         });
     }
     res.writeHead(200, {'Content-Type': 'text/xml'});
