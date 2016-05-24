@@ -71,13 +71,18 @@ app.get('/respond', function(req, res) {
             console.log('ownerid: ' + ownerid);
             messageQueue.child(ownerid).once('value', function(snapshot) {
                 workouts = snapshot.val();
-                var respondTo = workouts[workouts.length -1];
-                console.log('respondTo: ' + respondTo);
-                client.sms.messages.create({
-                    to:'+1' + respondTo.from_phone,
-                    from: '+13126754740',
-                    body: respondTo.from_name + ' confirmed your request. Enjoy your workout!',
-                });
+                console.log(workouts);
+                for (var key in workouts) {
+                    if (workouts.hasOwnProperty(key)) {
+                        var respondTo = workouts[key];
+                        console.log('respondTo: ' + respondTo);
+                        client.sms.messages.create({
+                            to:'+1' + respondTo.from_phone,
+                            from: '+13126754740',
+                            body: respondTo.from_name + ' confirmed your request. Enjoy your workout!',
+                        });
+                    }
+                }
             });
         });
     }
