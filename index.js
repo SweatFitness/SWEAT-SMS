@@ -55,12 +55,12 @@ app.get('/sendText', function(req, res) {
     });
 });
 
-app.post('/respond', function(req, res) {
+app.get('/respond', function(req, res) {
     var twilio = require('twilio');
     var twiml = new twilio.TwimlResponse();
     console.log(req.body);
-    console.log(req.From);
-    console.log(req.body.From);
+    console.log(req.from);
+    console.log(req.body.from);
     console.log(req.body.Body);
     
     if (req.body.Body == 'hello') {
