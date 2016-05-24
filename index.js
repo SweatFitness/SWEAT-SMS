@@ -79,7 +79,7 @@ app.get('/respond', function(req, res) {
                         client.sms.messages.create({
                             to:'+1' + respondTo.from_phone,
                             from: '+13126754740',
-                            body: respondTo.from_name + ' confirmed your request. Enjoy your workout!',
+                            body: respondTo.to_name + ' confirmed your request. Enjoy your workout!',
                         });
                     }
                 }
