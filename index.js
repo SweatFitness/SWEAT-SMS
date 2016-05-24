@@ -58,6 +58,7 @@ app.get('/sendText', function(req, res) {
 app.post('/respond', function(req, res) {
     var twilio = require('twilio');
     var twiml = new twilio.TwimlResponse();
+    console.log(req);
     if (req.body.Body == 'hello') {
         twiml.message('Hi!');
     } else if(req.body.Body == 'bye') {
