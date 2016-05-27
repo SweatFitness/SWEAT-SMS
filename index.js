@@ -78,8 +78,9 @@ app.get('/respond', function(req, res) {
                         client.sms.messages.create({
                             to:'+1' + respondTo.from_phone,
                             from: '+13126754740',
-                            body: respondTo.to_name + ' confirmed your request. Enjoy your workout!',
+                            body: '[SWEAT] ' + respondTo.to_name + ' confirmed your request to workout at ' + respondTo.location + 'on ' + respondTo.date + ', ' + respondTo.at +'. Enjoy your workout!',
                         });
+                        break;
                     }
                 }
             });
